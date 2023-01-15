@@ -19,27 +19,20 @@ class ClassesSeeder extends Seeder
     public function run()
     {
         {
-            Classes::factory()
-                ->count(10)
-                ->sequence(fn($sequence) => ['name' => 'Class ' . $sequence->index + 1])
+            Classes::factory()->count(10)->sequence(fn($sequence) => ['name' => 'Class ' . $sequence->index + 1])
                 ->has(
-                    Section::factory()
-                        ->count(2)
-                        ->state(
-                            new Sequence(
-                                ['name' => 'Section A'],
-                                ['name' => 'Section B'],
-                            )
+                    Section::factory()->count(2)->state(
+                        new Sequence(
+                            ['name' => 'Section A'],
+                            ['name' => 'Section B'],
                         )
-                        ->has(
-                            Student::factory()
-                                ->count(5)
-                                ->state(
-                                    function (array $attributes, Section $section) {
-                                        return ['class_id' => $section->class_id];
-                                    }
-                                )
+                    )->has(
+                        Student::factory()->count(5)->state(
+                            function (array $attributes, Section $section) {
+                                return ['class_id' => $section->class_id];
+                            }
                         )
+                    )
                 )
                 ->create();
         }
